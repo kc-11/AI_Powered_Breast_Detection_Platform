@@ -1,0 +1,40 @@
+.detection-container {
+    background-image: url('./images/About.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 40px 0;
+  }
+  
+  .content-paper {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    color: #2c3e50;
+    margin-bottom: 20px;
+  }
+  
+  .description {
+    color: #34495e;
+    margin-bottom: 20px;
+  }
+  
+  .upload-button {
+    margin-right: 10px;
+  }
+  
+  .file-name {
+    color: #2c3e50;
+    font-style: italic;
+  }
+  
+  .analyze-button {
+    margin-top: 20px;
+  }
