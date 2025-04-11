@@ -28,7 +28,9 @@ mongoose.connect(MONGO_URI, {
 mongoose.connection.once('open', () => console.log('Connected to MongoDB'));
 
 // Middleware
-app.use(cors());
+const cors = require('cors');
+app.use(cors({ origin: 'https://ai-powered-breast-detection-platform.vercel.app/' }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
