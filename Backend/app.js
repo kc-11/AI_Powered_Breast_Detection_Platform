@@ -52,8 +52,14 @@ app.post('/predict', upload.single('image'), async (req, res) => {
     });
     await imageDoc.save();
 
+    // ✅ Ensure /temp directory exists
+    const tempDir = path.join(__dirname, 'temp');
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir); // Create the folder if it doesn't exist
+    }
+
     // Save buffer as temp file
-    const tempPath = path.join(__dirname, 'temp', `${Date.now()}.jpg`);
+    const tempPath = path.join(tempDir, `${Date.now()}.jpg`);
     fs.writeFileSync(tempPath, req.file.buffer);
 
     // Feed temp file to Python
@@ -71,6 +77,7 @@ app.post('/predict', upload.single('image'), async (req, res) => {
     res.status(500).send('Prediction failed');
   }
 });
+
 
 app.post('/chat', async (req, res) => {
   try {
