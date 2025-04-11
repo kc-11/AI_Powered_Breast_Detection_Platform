@@ -1,4 +1,3 @@
-
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -18,6 +17,12 @@ const app = express();
 const port = process.env.PORT || 3000;
 const SECRET_KEY = '1234';
 
+// ✅ Ensure 'temp' folder exists at startup
+const tempDir = path.join(__dirname, 'temp');
+if (!fs.existsSync(tempDir)) {
+  fs.mkdirSync(tempDir);
+}
+
 // MongoDB Connection
 const MONGO_URI = process.env.MONGO_URI;
 
@@ -28,12 +33,9 @@ mongoose.connect(MONGO_URI, {
 mongoose.connection.once('open', () => console.log('Connected to MongoDB'));
 
 // Middleware
-const cors = require('cors');
 app.use(cors({ origin: 'https://ai-powered-breast-detection-platform.vercel.app/' }));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 
 // Multer (memory storage for buffer upload)
 const storage = multer.memoryStorage();
@@ -51,12 +53,6 @@ app.post('/predict', upload.single('image'), async (req, res) => {
       imageBuffer: req.file.buffer,
     });
     await imageDoc.save();
-
-    // ✅ Ensure /temp directory exists
-    const tempDir = path.join(__dirname, 'temp');
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir); // Create the folder if it doesn't exist
-    }
 
     // Save buffer as temp file
     const tempPath = path.join(tempDir, `${Date.now()}.jpg`);
@@ -77,7 +73,6 @@ app.post('/predict', upload.single('image'), async (req, res) => {
     res.status(500).send('Prediction failed');
   }
 });
-
 
 app.post('/chat', async (req, res) => {
   try {
