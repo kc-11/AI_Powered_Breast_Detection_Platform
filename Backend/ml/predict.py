@@ -5,12 +5,28 @@ import cv2
 from scipy import ndimage
 from keras.models import load_model
 import tensorflow as tf
+import requests
 
 # Suppress TensorFlow logging
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
-a = 256
+model_path = 'ml/model.h5'
+
+def download_model_if_not_exists():
+    if not os.path.exists(model_path):
+        print("Downloading model from public S3 URL...")
+        os.makedirs('ml', exist_ok=True)
+        url = "https://kush-breast-cancer-bucket.s3.eu-north-1.amazonaws.com/model.h5"  # <--- Replace this with your actual S3 URL
+        r = requests.get(url)
+        with open(model_path, "wb") as f:
+            f.write(r.content)
+        print("Model downloaded successfully.")
+
+download_model_if_not_exists()
+
+model = load_model(model_path)
+
 def abmin(a, b):
     return a if abs(a) < abs(b) else b
 
@@ -32,17 +48,14 @@ def predict(image_path, model):
     image1 = np.expand_dims(rotated_image, axis=-1)
     image1 = np.expand_dims(image1, axis=0)
 
-    prediction = model.predict(image1, verbose=0)  # Add verbose=0 to suppress progress output
+    prediction = model.predict(image1, verbose=0)
 
     if prediction > 0.5:
         return "The image is predicted to be malignant."
     else:
         return f"The image is predicted to be benign. (Confidence: {1 - prediction[0][0]:.2f})"
 
-model_path = 'ml/model.h5'
-model = load_model(model_path)
-
 if __name__ == '__main__':
     image_path = sys.argv[1]
     result = predict(image_path, model)
-    print(result)  # This will be captured by the Node.js process
+    print(result)
