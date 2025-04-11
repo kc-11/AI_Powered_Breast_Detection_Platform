@@ -10,7 +10,10 @@ import Symptoms from './components/Symptoms';
 import Detection from './components/Detection';
 import Result from './components/Result';
 import Chat from './components/Chat';
+import RiskAssessment from './components/risk-assesment';
+import Prevention from './components/prevention';
 import theme from './theme';
+
 import { AuthProvider } from './AuthContext';
 
 function App() {
@@ -25,6 +28,8 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/symptoms" element={<Symptoms />} />
             <Route path="/detection" element={<Detection />} />
+            <Route path="/risk-assessment" element={<RiskAssessment />} />
+            <Route path="/prevention" element={<Prevention />} />
             <Route path="/result" element={<Result />} />
             <Route path="/chat" element={<Chat />} />
           </Routes>

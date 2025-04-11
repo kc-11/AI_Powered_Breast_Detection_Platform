@@ -1,87 +1,127 @@
-import React, { useState } from 'react';
-import { Container, Typography, Box, Button, CircularProgress, Alert, Paper } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import './Detection.css';
+import { useState } from "react";
+import { Container, Paper, Box, Typography, Button, Alert } from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Detection = () => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
-    setError('');
+    setError("");
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     if (!file) {
-      setError('Please select an image file.');
+      setError("Please select an image file.");
       return;
     }
-
     setLoading(true);
-    setError('');
+    setError("");
     const formData = new FormData();
-    formData.append('image', file);
+    formData.append("image", file);
 
     try {
-      const response = await axios.post('/predict', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      const response = await axios.post("/predict", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
-      navigate('/result', { state: { result: response.data.result } });
+      navigate("/result", { state: { result: response.data.result } });
     } catch (error) {
-      console.error('Error:', error);
-      setError('An error occurred while processing the image. Please try again.');
+      console.error("Error:", error);
+      setError("An error occurred while processing the image. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Box className="detection-container">
-      <Container maxWidth="md">
-        <Paper elevation={3} className="content-paper">
-          <Typography variant="h3" component="h1" gutterBottom className="title">
-            Breast Cancer Detection
+    <Container maxWidth="md" sx={{ py: 10 }}>
+      <Paper
+        elevation={0}
+        sx={{
+          p: 6,
+          borderRadius: 4,
+          bgcolor: "background.paper",
+          boxShadow: 3,
+        }}
+      >
+        <Box textAlign="center" mb={6}>
+          <CloudUploadIcon sx={{ fontSize: 80, color: "secondary.main", mb: 2 }} />
+          <Typography variant="h4" gutterBottom>
+            Upload Mammogram Scan
           </Typography>
-          <Typography variant="body1" paragraph className="description">
-            Upload a mammogram image for analysis. Our AI-powered system will process the image and provide a prediction.
+          <Typography color="text.secondary">
+            Supported formats: DICOM, PNG, JPG (Max 10MB)
           </Typography>
-          {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-          <form onSubmit={handleSubmit}>
-            <input
-              accept="image/*"
-              style={{ display: 'none' }}
-              id="raised-button-file"
-              type="file"
-              onChange={handleFileChange}
-            />
-            <label htmlFor="raised-button-file">
-              <Button variant="contained" component="span" className="upload-button">
-                Upload Image
-              </Button>
-            </label>
-            {file && <Typography sx={{ mt: 2 }} className="file-name">{file.name}</Typography>}
-            <Box sx={{ mt: 2 }}>
-              <Button
-                variant="contained"
-                color="primary"
-                type="submit"
-                disabled={!file || loading}
-                className="analyze-button"
-              >
-                {loading ? <CircularProgress size={24} /> : 'Analyze Image'}
-              </Button>
-            </Box>
-          </form>
-        </Paper>
-      </Container>
-    </Box>
+        </Box>
+
+        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+
+        <Box
+          sx={{
+            border: "2px dashed",
+            borderColor: "divider",
+            borderRadius: 3,
+            p: 6,
+            textAlign: "center",
+            transition: "all 0.3s",
+            "&:hover": { borderColor: "secondary.main" },
+          }}
+        >
+          <input
+            accept="image/*"
+            style={{ display: "none" }}
+            id="file-upload"
+            type="file"
+            onChange={handleFileChange}
+          />
+          <label htmlFor="file-upload">
+            <Button
+              variant="outlined"
+              component="span"
+              size="large"
+              startIcon={<UploadFileIcon />}
+              sx={{
+                px: 5,
+                py: 1.5,
+                borderRadius: 2,
+                borderWidth: 2,
+                "&:hover": { borderWidth: 2 },
+              }}
+            >
+              Choose File
+            </Button>
+          </label>
+          {file && (
+            <Typography variant="body2" sx={{ mt: 2, color: "text.secondary" }}>
+              Selected: {file.name}
+            </Typography>
+          )}
+        </Box>
+
+        <Box textAlign="center" mt={6}>
+          <Button
+            variant="contained"
+            size="large"
+            disabled={loading}
+            onClick={handleSubmit}
+            sx={{
+              px: 8,
+              py: 1.5,
+              bgcolor: "secondary.main",
+              "&:hover": { bgcolor: "secondary.dark" },
+            }}
+          >
+            {loading ? "Analyzing..." : "Analyze Image"}
+          </Button>
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 

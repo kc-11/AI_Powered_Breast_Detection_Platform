@@ -1,62 +1,77 @@
 import React from 'react';
-import { Container, Typography, Box } from '@mui/material';
-import './About.css';
+import { Container, Typography, Box, Paper, Grid } from '@mui/material';
 
 const About = () => {
   return (
-    <Box className="about-container">
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', py: 10 }}>
       <Container maxWidth="lg">
-        <Box sx={{ pt: 8, pb: 6 }}>
-          <Typography variant="h2" component="h1" gutterBottom align="center" className="title">
+        <Paper elevation={3} sx={{ p: 6, borderRadius: 4, bgcolor: 'background.paper' }}>
+          <Typography variant="h2" align="center" gutterBottom sx={{ fontWeight: 700, color: 'primary.main' }}>
             About Breast Cancer
           </Typography>
-          <Typography variant="h5" align="center" paragraph className="subtitle">
+          <Typography variant="h5" align="center" paragraph sx={{ color: 'text.secondary', mb: 4 }}>
             Understanding, Prevention, and Early Detection
           </Typography>
-        </Box>
 
-        <Box className="section">
-          <Typography variant="h4" gutterBottom className="section-title">
-            Understanding Breast Cancer
-          </Typography>
-          <Typography variant="body1" paragraph>
-            Breast cancer is a complex disease that occurs when cells in the breast tissue grow and divide uncontrollably. These abnormal cells can form tumors and potentially spread to other parts of the body. Key points to understand:
-          </Typography>
-          <ul>
-            <li>It's the most common cancer in women worldwide, but can also affect men.</li>
-            <li>There are several types of breast cancer, classified based on the specific cells affected.</li>
-            <li>Risk factors include age, genetic predisposition, hormonal factors, and lifestyle choices.</li>
-            <li>Symptoms may include lumps, changes in breast size or shape, skin changes, and nipple discharge.</li>
-            <li>Regular screenings and self-exams are crucial for early detection and improved outcomes.</li>
-            <li>Genetic testing and understanding your family history can provide valuable insights and guide preventive measures.</li>
-          </ul>
-        </Box>
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={6}>
+              <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, color: 'secondary.main' }}>
+                Understanding Breast Cancer
+              </Typography>
+              <Typography variant="body1" paragraph>
+                Breast cancer is a complex disease caused by uncontrolled cell growth in the breast tissue. It can form tumors and spread to other parts of the body. Key points include:
+              </Typography>
+              <ul>
+                <li>Most common cancer in women, but also affects men.</li>
+                <li>Multiple types based on affected cells.</li>
+                <li>Risk factors include genetics, hormones, and lifestyle choices.</li>
+                <li>Symptoms: lumps, shape changes, skin discoloration, and discharge.</li>
+                <li>Early detection through screenings significantly improves outcomes.</li>
+              </ul>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Box
+                sx={{
+                  borderRadius: 4,
+                  overflow: 'hidden',
+                  boxShadow: 3,
+                  '&:hover img': { transform: 'scale(1.03)' },
+                }}
+              >
+                <img
+                  src={require('./images/j.png')}
+                  alt="Breast Cancer Awareness"
+                  style={{ width: '100%', transition: 'transform 0.3s ease' }}
+                />
+              </Box>
+            </Grid>
+          </Grid>
 
-        <Box className="section">
-          <Typography variant="h4" gutterBottom className="section-title">
-            Early Detection and Prevention
-          </Typography>
-          <Typography variant="body1" paragraph>
-            Early detection of breast cancer significantly improves treatment outcomes and survival rates. Here's what you need to know:
-          </Typography>
-          <ul>
-            <li>Mammograms: The most effective screening tool, recommended annually for women over 40.</li>
-            <li>Clinical Breast Exams: Regular check-ups with a healthcare provider can help detect changes.</li>
-            <li>Self-Exams: Monthly self-examinations help you become familiar with your breast tissue.</li>
-            <li>Risk Assessment: Understanding your personal risk factors can guide prevention strategies.</li>
-            <li>Lifestyle Choices: Maintaining a healthy weight, regular exercise, and limiting alcohol can reduce risk.</li>
-            <li>Our AI Tool: Assists in analyzing mammograms, but should be used in conjunction with professional medical advice.</li>
-          </ul>
-        </Box>
+          <Box sx={{ mt: 6 }}>
+            <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, color: 'secondary.main' }}>
+              Early Detection & Prevention
+            </Typography>
+            <Typography variant="body1" paragraph>
+              Early detection improves survival rates. Key strategies include:
+            </Typography>
+            <ul>
+              <li>Annual mammograms for women over 40.</li>
+              <li>Regular clinical exams with a healthcare provider.</li>
+              <li>Self-examinations to detect changes early.</li>
+              <li>Risk assessment based on family history.</li>
+              <li>Healthy lifestyle: balanced diet, exercise, and limited alcohol intake.</li>
+            </ul>
+          </Box>
 
-        <Box sx={{ mt: 6 }}>
-          <Typography variant="h4" gutterBottom className="section-title">
-            Our Mission
-          </Typography>
-          <Typography variant="body1" paragraph className="mission-text">
-            We are committed to empowering individuals with knowledge and cutting-edge tools for early breast cancer detection. Our advanced AI technology aims to improve breast cancer awareness and outcomes through timely intervention and personalized care strategies. We strive to make breast health information accessible and to contribute to a future where breast cancer is detected early and treated effectively.
-          </Typography>
-        </Box>
+          <Box sx={{ mt: 6 }}>
+            <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, color: 'secondary.main' }}>
+              Our Mission
+            </Typography>
+            <Typography variant="body1" paragraph>
+              We empower individuals with knowledge and AI-driven tools for early breast cancer detection. Our goal is to enhance breast health awareness and enable timely interventions for better patient outcomes.
+            </Typography>
+          </Box>
+        </Paper>
       </Container>
     </Box>
   );
