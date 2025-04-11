@@ -17,10 +17,17 @@ const app = express();
 const port = process.env.PORT || 3000;
 const SECRET_KEY = '1234';
 
-// ✅ Ensure 'temp' folder exists at startup
+// ✅ Ensure 'temp' directory exists at startup
 const tempDir = path.join(__dirname, 'temp');
-if (!fs.existsSync(tempDir)) {
-  fs.mkdirSync(tempDir);
+try {
+  if (!fs.existsSync(tempDir)) {
+    fs.mkdirSync(tempDir, { recursive: true });
+    console.log('✅ temp directory created at:', tempDir);
+  } else {
+    console.log('✅ temp directory already exists at:', tempDir);
+  }
+} catch (err) {
+  console.error('❌ Failed to create temp directory:', err);
 }
 
 // MongoDB Connection
