@@ -30,6 +30,8 @@ mongoose.connection.once('open', () => console.log('Connected to MongoDB'));
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 
 // Multer (memory storage for buffer upload)
 const storage = multer.memoryStorage();
