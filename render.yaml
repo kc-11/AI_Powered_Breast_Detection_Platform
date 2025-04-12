@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: breast-cancer-backend
+    env: node
+    buildCommand: ./build.sh
+    startCommand: node Backend/app.js
