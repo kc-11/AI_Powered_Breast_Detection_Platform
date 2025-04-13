@@ -80,6 +80,22 @@ app.post('/predict', upload.single('image'), async (req, res) => {
     res.status(500).send('Prediction failed');
   }
 });
+app.get('/model-status', (req, res) => {
+  const modelPath = path.join(__dirname, 'ml', 'model.h5');
+
+  fs.stat(modelPath, (err, stats) => {
+    if (err) {
+      return res.status(404).json({ status: 'Model not found on server.' });
+    }
+
+    return res.json({
+      status: 'Model found on server.',
+      size: `${(stats.size / 1024).toFixed(2)} KB`,
+      lastModified: stats.mtime
+    });
+  });
+});
+
 
 app.post('/chat', async (req, res) => {
   try {
