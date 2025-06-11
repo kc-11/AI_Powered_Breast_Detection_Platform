@@ -27,9 +27,14 @@ const Detection = () => {
     formData.append("image", file);
 
     try {
-      const response = await axios.post("/predict", formData, {
+      const response = await axios.post(
+      "https://breastguardian-eggmc5fzfmdzbgbf.centralindia-01.azurewebsites.net/predict",
+      formData,
+      {
         headers: { "Content-Type": "multipart/form-data" },
-      });
+      }
+    );
+
       navigate("/result", { state: { result: response.data.result } });
     } catch (error) {
       console.error("Error:", error);
