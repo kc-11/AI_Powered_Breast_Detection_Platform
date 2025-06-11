@@ -49,6 +49,10 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // ROUTES
+app.get("/", (req, res) => {
+  res.send("✅ Backend is up and running!");
+});
+
 app.post('/predict', upload.single('image'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).send('No image uploaded');
